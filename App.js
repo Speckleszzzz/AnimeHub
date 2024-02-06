@@ -9,7 +9,6 @@ export default function App() {
       <View className="flex items-center justify-center bg-red">
         <Text>Open up App.js to start working on your app!</Text>
         <Text>Open up App.js to start working on your app!</Text>
-        <Text>Open up App.js to start working on your app!</Text>
         <StatusBar style="auto" />
       </View>
     </View>
