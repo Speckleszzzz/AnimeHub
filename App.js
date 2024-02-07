@@ -1,13 +1,5 @@
-import React, { useState } from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  TextInput,
-  SafeAreaView,
-  Image,
-  Pressable,
-} from "react-native";
+import React, { useState } from "react"; 
+import {StyleSheet, Text, View, TextInput, SafeAreaView, Image, Pressable, } from "react-native";
 
 export default function App() {
   const [username, setUsername] = useState("");
