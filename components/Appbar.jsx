@@ -4,13 +4,17 @@ import { Appbar } from "react-native-paper";
 const AppBar = (props) => (
   <Appbar.Header
     style={{
-      backgroundColor: "#E6E6FA",
-      borderBottomColor: "#000",
-      borderBottomWidth: 1,
+      backgroundColor: "rgb(245, 245, 245)",
+    //   borderBottomColor: "#000",
+    //   borderBottomWidth: 1,
+      
     }}
   >
     <Appbar.BackAction onPress={() => {}} />
-    <Appbar.Content title={props.title} />
+    <Appbar.Content
+      title={""}
+      
+    />
     {/* <Appbar.Action icon="calendar" onPress={() => {}} />
     <Appbar.Action icon="magnify" onPress={() => {}} /> */}
   </Appbar.Header>

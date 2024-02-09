@@ -29,7 +29,7 @@ const FeedbackQuestion = (props) => {
                   type="material-community"
                   name="square-rounded"
                   size={24}
-                  color="#000" // Change color as needed
+                  color="#fff" // Change color as needed
                 />
               }
               // Change color as needed
@@ -57,14 +57,15 @@ const styles = StyleSheet.create({
 
   option: {
     flexDirection: "row",
-    backgroundColor: "#FAF9F6",
+    borderColor: "#8888E7",
+    borderWidth: 0.4,
     alignItems: "center",
     marginBottom: 8,
     borderRadius: 5,
   },
 
   optionSelected: {
-    backgroundColor: "#8888E7",
+    backgroundColor: "#1C6BE7",
     color: "white",
   },
 
@@ -76,18 +77,19 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "bold",
     marginBottom: 8,
+    color: "#1C6BE7",
   },
 
   optionText: {
     fontSize: 14,
     fontWeight: "bold",
-    color: "#333", 
+    color: "#333",
   },
 
   optionTextSelected: {
     fontSize: 14,
     fontWeight: "bold",
-    color: "#fff", 
+    color: "#fff",
   },
 });
 
