@@ -1,11 +1,20 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import AppBar from "../components/Appbar";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
 import { Icon } from "react-native-elements";
 
-const AnimeExperienceScreen = () => {
+const AnimeExperienceScreen = ({ navigation }) => {
+  const [tappedIndex, setTappedIndex] = useState(0);
+
+  const goToFeedback = (index) => {
+    setTappedIndex(index);
+    setTimeout(() => {
+      navigation.navigate("More about you");
+    }, 0);
+  };
+
   return (
     <SafeAreaProvider style={styles.safeArea}>
       <View style={styles.container}>
@@ -13,15 +22,18 @@ const AnimeExperienceScreen = () => {
           How experienced are you with watching anime?
         </Text>
         <View style={{ height: 10 }}></View>
-        
-        <TouchableOpacity style={styles.section}>
+
+        <TouchableOpacity
+          style={[styles.section, tappedIndex === 1 && styles.sectionTapped]}
+          onPress={() => goToFeedback(1)}
+        >
           <View style={styles.innerSection}>
             <Text style={styles.sectionText}>Basic</Text>
             <Icon
               type="font-awesome"
-              name="angle-right"
+              name={`${tappedIndex != 1 ? "angle-right" : "spinner"}`}
               size={24}
-              color="#000"
+              color="#fff"
             />
           </View>
           <Text style={styles.sectionDescription}>
@@ -29,15 +41,17 @@ const AnimeExperienceScreen = () => {
           </Text>
         </TouchableOpacity>
 
-
-        <TouchableOpacity style={styles.section}>
+        <TouchableOpacity
+          style={[styles.section, tappedIndex === 2 && styles.sectionTapped]}
+          onPress={() => goToFeedback(2)}
+        >
           <View style={styles.innerSection}>
             <Text style={styles.sectionText}>Intermediate</Text>
             <Icon
               type="font-awesome"
-              name="angle-right"
+              name={`${tappedIndex != 2 ? "angle-right" : "spinner"}`}
               size={24}
-              color="#000"
+              color="#fff"
             />
           </View>
           <Text style={styles.sectionDescription}>
@@ -45,14 +59,17 @@ const AnimeExperienceScreen = () => {
             development.
           </Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.section}>
+        <TouchableOpacity
+          style={[styles.section, tappedIndex === 3 && styles.sectionTapped]}
+          onPress={() => goToFeedback(3)}
+        >
           <View style={styles.innerSection}>
             <Text style={styles.sectionText}>Advanced</Text>
             <Icon
               type="font-awesome"
-              name="angle-right"
+              name={`${tappedIndex != 3 ? "angle-right" : "spinner"}`}
               size={24}
-              color="#000"
+              color="#fff"
             />
           </View>
           <Text style={styles.sectionDescription}>
@@ -68,7 +85,7 @@ const AnimeExperienceScreen = () => {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: "#23223C",
   },
   container: {
     flex: 1,
@@ -92,32 +109,31 @@ const styles = StyleSheet.create({
     paddingHorizontal: 25,
     height: 150,
     justifyContent: "center",
-    backgroundColor: "#fff",
-    borderColor: "#8888E7",
     borderWidth: 1,
     borderRadius: 5,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
+    borderColor: "#6E4FC8",
   },
+
+  sectionTapped: {
+    backgroundColor: "#6E4FC8",
+    color: "white",
+    transitionProperty: "background-color",
+    transitionDuration: "0.5s",
+  },
+
   sectionText: {
     fontSize: 24,
     fontWeight: "bold",
-    color: "#1C6BE7",
+    color: "#fff",
   },
   sectionDescription: {
     fontSize: 16,
-    color: "#000",
+    color: "#9A98BF",
   },
   question: {
     fontSize: 30,
     fontWeight: "bold",
-    color: "#1C6BE7",
+    color: "#fff",
     marginBottom: 20,
     textAlign: "center",
   },

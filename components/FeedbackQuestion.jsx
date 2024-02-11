@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
 
   option: {
     flexDirection: "row",
-    borderColor: "#8888E7",
+    borderColor: "#6E4FC8",
     borderWidth: 0.4,
     alignItems: "center",
     marginBottom: 8,
@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
   },
 
   optionSelected: {
-    backgroundColor: "#1C6BE7",
+    backgroundColor: "#6E4FC8",
     color: "white",
   },
 
@@ -77,13 +77,13 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "bold",
     marginBottom: 8,
-    color: "#1C6BE7",
+    color: "#fff",
   },
 
   optionText: {
     fontSize: 14,
     fontWeight: "bold",
-    color: "#333",
+    color: "#9A98BF",
   },
 
   optionTextSelected: {

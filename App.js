@@ -1,7 +1,12 @@
 import React, { useState } from "react";
 import Login from "./screens/Login";
+import AppBar from "./components/Appbar";
+import Register from "./screens/Register";
 import LoginFeedback from "./screens/LoginFeedback";
+import HomeScreen from "./screens/HomeScreen";
 import AnimeExperienceScreen from "./screens/AnimeExperienceScreen";
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
 
 import {
   StyleSheet,
@@ -13,6 +18,29 @@ import {
   Pressable,
 } from "react-native";
 
+const Stack = createStackNavigator();
+
 export default function App() {
-  return <AnimeExperienceScreen />;
+  return (
+    <NavigationContainer>
+      <Stack.Navigator
+        initialRouteName="Register"
+        screenOptions={{
+          header: (props) => <AppBar {...props} />,
+        }}
+      >
+        <Stack.Screen name="Register" component={Register} />
+        <Stack.Screen name="Login" component={Login} />
+        <Stack.Screen name="More about you" component={LoginFeedback} />
+        <Stack.Screen
+          name="Weeb Level"
+          component={AnimeExperienceScreen}
+        />
+        <Stack.Screen
+          name="HomeScreen"
+          component={HomeScreen}
+        />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
 }
