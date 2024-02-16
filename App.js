@@ -4,6 +4,7 @@ import AppBar from "./components/Appbar";
 import Register from "./screens/Register";
 import LoginFeedback from "./screens/LoginFeedback";
 import HomeScreen from "./screens/HomeScreen";
+import FeedPage from "./screens/FeedPage";
 import UploadPostPage from "./screens/UploadPostPage";
 import AnimeExperienceScreen from "./screens/AnimeExperienceScreen";
 import { NavigationContainer } from "@react-navigation/native";
@@ -25,7 +26,7 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="UploadPage"
+        initialRouteName="FeedPage"
         screenOptions={{
           header: (props) => <AppBar {...props} />,
         }}
@@ -35,6 +36,7 @@ export default function App() {
         <Stack.Screen name="More about you" component={LoginFeedback} />
         <Stack.Screen name="Weeb Level" component={AnimeExperienceScreen} />
         <Stack.Screen name="UploadPage" component={UploadPostPage} />
+        <Stack.Screen name="FeedPage" component={FeedPage} />
       </Stack.Navigator>
     </NavigationContainer>
   );

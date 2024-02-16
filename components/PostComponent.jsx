@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
-const Post = ({ post }) => {
+const PostComponent = ({ post }) => {
   const navigation = useNavigation();
   const [eyeCount, setEyeCount] = useState(0);
   const [isEyeClicked, setIsEyeClicked] = useState(false);
@@ -151,4 +151,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Post;
+export default PostComponent;

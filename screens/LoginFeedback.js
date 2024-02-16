@@ -145,17 +145,20 @@ const styles = StyleSheet.create({
     backgroundColor: "#23223C",
     flex: 1,
   },
+
   contentContainer: {
     flexGrow: 1,
     paddingTop: 20,
     paddingHorizontal: 30,
     gap: 20,
   },
+
   heading: {
     fontSize: 30,
     fontWeight: "bold",
     color: "#fff",
   },
+
   subheading: {
     fontSize: 15,
     fontWeight: "normal",
