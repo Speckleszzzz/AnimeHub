@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { supabase } from "../lib/supabase";
+
 import {
   StyleSheet,
   Text,
@@ -13,11 +15,24 @@ export default function Register({ navigation }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const Register = () => {
-    console.log("logged in");
-    navigation.navigate("Weeb Level");
-  };
+
+  async function signUpWithEmail() {
+    setLoading(true);
+    const {
+      data: { session },
+      error,
+    } = await supabase.auth.signUp({
+      email: email,
+      password: password,
+    });
+
+    if (error) Alert.alert(error.message);
+    if (!session)
+      Alert.alert("Please check your inbox for email verification!");
+    setLoading(false);
+  }
 
   return (
     <SafeAreaView style={styles.mainDiv}>
@@ -64,14 +79,26 @@ export default function Register({ navigation }) {
             placeholder="......."
             secureTextEntry={true}
           />
-          <View style={{height:25}}></View>
-          <Text style={{ fontSize: 12, color: "white", position: "absolute" , bottom: 0, right:0 }}>
+          <View style={{ height: 25 }}></View>
+          <Text
+            style={{
+              fontSize: 12,
+              color: "white",
+              position: "absolute",
+              bottom: 0,
+              right: 0,
+            }}
+          >
             Forgot Password ?
           </Text>
         </View>
       </View>
 
-      <Pressable onPress={Register} style={styles.button}>
+      <Pressable
+        onPress={signUpWithEmail}
+        style={styles.button}
+        disabled={loading}
+      >
         <View style={{ flexDirection: "row", justifyContent: "center" }}>
           <Text style={{ color: "white" }}>Sign Up </Text>
         </View>

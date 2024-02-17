@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { supabase } from "../lib/supabase";
 import {
   StyleSheet,
   Text,
@@ -10,26 +11,54 @@ import {
 } from "react-native";
 
 export default function Login({ navigation }) {
-  const [username, setUsername] = useState("");
+
+  const [session, setSession] = useState(null);
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+    });
+
+    supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session);
+    });
+  }, []);
+
+
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const [loading, setLoading] = useState(false);
 
   const login = () => {
     console.log("logged in");
     navigation.navigate("Weeb Level");
   };
 
+  async function signInWithEmail() {
+    setLoading(true);
+    const { error } = await supabase.auth.signInWithPassword({
+      email: email,
+      password: password,
+    });
+
+    if (error) Alert.alert(error.message);
+    setLoading(false);
+  }
+
   return (
     <SafeAreaView style={styles.mainDiv}>
       <View>
         <Image source={require("../assets/itachi.png")} style={styles.logo} />
       </View>
+      <View>{session?.user && <Text>Hello! {session.user.id}</Text>}</View>
       <View>
-        <Text style={{ marginLeft: 15, color: "white" }}>Username</Text>
+        <Text style={{ marginLeft: 15, color: "white" }}>Email</Text>
         <TextInput
           placeholderTextColor={"#9A98BF"}
           style={styles.input}
-          onChangeText={setUsername}
-          value={username}
+          onChangeText={setEmail}
+          value={email}
           placeholder="anyachan@74"
           selectionColor={"white"}
         />
@@ -52,7 +81,11 @@ export default function Login({ navigation }) {
         </Text>
       </View>
 
-      <Pressable onPress={login} style={styles.button}>
+      <Pressable
+        onPress={signInWithEmail}
+        style={styles.button}
+        disabled={loading}
+      >
         <View style={{ flexDirection: "row", justifyContent: "center" }}>
           <Text style={{ color: "white" }}>Log In </Text>
         </View>
