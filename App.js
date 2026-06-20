@@ -41,7 +41,7 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="Register"
+        initialRouteName="UploadPage"
         screenOptions={{
           header: (props) => <AppBar {...props} />,
         }}

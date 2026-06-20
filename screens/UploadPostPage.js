@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { supabase } from "../lib/supabase";
 import {
   View,
   Text,
@@ -7,25 +8,59 @@ import {
   Image,
   Alert,
   StyleSheet,
-  Picker,
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 
 const UploadPostPage = () => {
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
-  const [image, setImage] = useState(null);
-  const [genre, setGenre] = useState("");
-  const [showDropdown, setShowDropdown] = useState(false);
-  const [filteredOptions, setFilteredOptions] = useState([
-    "Solo Leveling",
-    "Naruto",
-    "One Piece",
-    "Sword Art Online",
-    "Boruto",
-    "Death Note",
-    "Jujustu",
-  ]);
+  const [session, setSession] = useState(null);
+  const [formData, setFormData] = useState({
+    username: "akash",
+    caption: "",
+    image: null,
+  });
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+    });
+
+    supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session);
+    });
+  }, []);
+
+  const handleUpload = async () => {
+    const { title, content, image } = formData;
+    if (title === "" || content === "" || image === null) {
+      Alert.alert("Error", "Please fill in all the fields.");
+      return;
+    }
+
+    const newPost = { ...formData };
+
+    try {
+      const { data, error } = await supabase
+        .from("PostTable")
+        .insert([newPost]);
+
+      if (error) {
+        console.error("Error inserting post:", error);
+      } else {
+        console.log("Post inserted successfully:", data);
+
+        setFormData({
+          caption: "",
+          image: null,
+        });
+      }
+    } catch (error) {
+      console.error("Error inserting post:", error);
+    }
+  };
+
+  const handleInputChange = (name, value) => {
+    setFormData({ ...formData, [name]: value });
+  };
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -37,58 +72,12 @@ const UploadPostPage = () => {
 
     console.log("Image Picker Result:", result);
 
-    if (!result.cancelled && result.assets.length > 0) {
-      // Access the URI from the first asset in the array
-      setImage(result.assets[0].uri);
+    if (!result.cancelled) {
+      setFormData({ ...formData, image: result.assets[0].uri });
     }
   };
 
-  const handleGenreChange = (text) => {
-    setGenre(text);
-
-    if (text === "") {
-      // If the input is empty, reset the filtered options
-      setFilteredOptions([
-        "Solo Leveling",
-        "Naruto",
-        "One Piece",
-        "Sword Art Online",
-        "Boruto",
-        "Death Note",
-      ]);
-      setShowDropdown(false); // Hide the dropdown
-    } else {
-      // Filter options based on user input
-      const filtered = filteredOptions.filter((option) =>
-        option.toLowerCase().includes(text.toLowerCase())
-      );
-      setFilteredOptions(filtered);
-      setShowDropdown(true); // Show the dropdown
-    }
-  };
-
-  const handlePost = () => {
-    if (title === "" || content === "" || image === null || genre === "") {
-      Alert.alert("Error", "Please fill in all the fields.");
-      return;
-    }
-
-    // Implement your logic for posting the content here
-    console.log("Title:", title);
-    console.log("Content:", content);
-    console.log("Image:", image);
-    console.log("Genre:", genre);
-
-    // Reset fields after posting
-    setTitle("");
-    setContent("");
-    setImage(null);
-    setGenre("");
-    setShowDropdown(false);
-
-    // Display a success message to the user
-    Alert.alert("Success", "Your content has been posted successfully!");
-  };
+  const { title, content, image } = formData;
 
   return (
     <View style={styles.container}>
@@ -98,44 +87,17 @@ const UploadPostPage = () => {
         <Text style={styles.uploadText}>Upload Image</Text>
       </TouchableOpacity>
       {image && <Image source={{ uri: image }} style={styles.imagePreview} />}
-      <Text style={styles.subHeading}>Title</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Enter your title..."
-        value={title}
-        onChangeText={(text) => setTitle(text)}
-      />
-      <Text style={styles.subHeading}>Content</Text>
+      
+      <Text style={styles.subHeading}>Caption</Text>
       <TextInput
         style={styles.input}
         multiline
         placeholder="Write your content here..."
         value={content}
-        onChangeText={(text) => setContent(text)}
+        onChangeText={handleInputChange}
       />
-      <Text style={styles.subHeading}>Genre</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Type to show dropdown"
-        value={genre}
-        onChangeText={handleGenreChange}
-      />
-      {showDropdown && (
-        <Picker
-          selectedValue={genre}
-          onValueChange={(itemValue) => setGenre(itemValue)}
-          style={styles.picker}
-        >
-          {filteredOptions.map((option) => (
-            <Picker.Item
-              key={option}
-              label={option}
-              value={option.toLowerCase().replace(" ", "_")}
-            />
-          ))}
-        </Picker>
-      )}
-      <TouchableOpacity style={styles.postButton} onPress={handlePost}>
+
+      <TouchableOpacity style={styles.postButton} onPress={handleUpload}>
         <Text style={styles.postButtonText}>Post</Text>
       </TouchableOpacity>
     </View>
@@ -183,11 +145,7 @@ const styles = StyleSheet.create({
     width: 200,
     height: 200,
     marginBottom: 20,
-    borderRadius: 5, // Add border radius for a square shape
-  },
-  picker: {
-    height: 40,
-    marginBottom: 20,
+    borderRadius: 5,
   },
   postButton: {
     backgroundColor: "blue",

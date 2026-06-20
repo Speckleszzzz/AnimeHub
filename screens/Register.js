@@ -17,15 +17,14 @@ export default function Register({ navigation }) {
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
 
-
   async function signUpWithEmail() {
     setLoading(true);
     const {
       data: { session },
       error,
     } = await supabase.auth.signUp({
-      email: email,
-      password: password,
+      phone: "+919940639989",
+      password: "12345",
     });
 
     if (error) Alert.alert(error.message);

@@ -11,7 +11,6 @@ import {
 } from "react-native";
 
 export default function Login({ navigation }) {
-
   const [session, setSession] = useState(null);
 
   useEffect(() => {
@@ -23,7 +22,6 @@ export default function Login({ navigation }) {
       setSession(session);
     });
   }, []);
-
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
